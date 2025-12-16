@@ -1,0 +1,39 @@
+{
+  "name": "sistema-ofertas-empleo",
+  "version": "2.0.0",
+  "description": "Sistema CRUD web para gestión de ofertas de empleo con estadísticas y búsqueda avanzada",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "import-data": "mongoimport --db BDEmpleos --collection Ofertas --file data/BDEmpleos.Ofertas.json --jsonArray",
+    "deploy": "echo 'Listo para despliegue'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crud",
+    "mongodb",
+    "express",
+    "web",
+    "ofertas",
+    "empleo",
+    "estadisticas",
+    "busqueda"
+  ],
+  "author": "Tu Nombre",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "mongodb": "^7.0.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

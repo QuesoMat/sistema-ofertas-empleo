@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Ofertas de Empleo CRUD</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-briefcase"></i> Sistema de Ofertas de Empleo</h1>
+            <p>CRUD Completo con MongoDB, Estadísticas y Búsqueda Avanzada</p>
+            <div class="header-info">
+                <span class="status-badge" id="apiStatus">
+                    <i class="fas fa-circle"></i> Conectando...
+                </span>
+            </div>
+        </header>
+
+        <!--búsqueda y filtros-->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por puesto, empresa o distrito...">
+                <button onclick="buscarOfertas()" class="btn-secondary">
+                    <i class="fas fa-search"></i> Búsqueda General
+                </button>
+            </div>
+            
+            <div class="search-by-knowledge">
+                <div class="knowledge-search-box">
+                    <input type="text" id="knowledgeInput" placeholder="Buscar por conocimiento (ej: Java, Angular, Node)...">
+                    <button onclick="buscarPorConocimiento()" class="btn-primary">
+                        <i class="fas fa-code"></i> Buscar por Conocimiento
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <select id="filterField">
+                    <option value="Puesto">Puesto</option>
+                    <option value="Empresa.RazonSoc">Empresa</option>
+                    <option value="Distrito">Distrito</option>
+                    <option value="PagoMensual">Salario mínimo</option>
+                </select>
+                <button onclick="cargarOfertas()" class="btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Mostrar Todas
+                </button>
+            </div>
+        </div>
+
+        <!--estadísticas-->
+        <div class="stats-section">
+            <div class="stats-header">
+                <h2><i class="fas fa-chart-bar"></i> Estadísticas y Promedios</h2>
+                <div class="stats-actions">
+                    <button onclick="exportarEstadisticas()" class="btn-secondary">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <button onclick="cargarEstadisticas()" class="btn-primary">
+                        <i class="fas fa-sync-alt"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="stats-grid" id="statsContainer">
+                <div class="loading-stats">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando estadísticas...
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!--lista de ofertas-->
+            <div class="ofertas-list">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Ofertas Disponibles 
+                        <span class="counter-badge" id="ofertasCounter">0</span>
+                    </h2>
+                    <div class="actions">
+                        <button onclick="exportarOfertas()" class="btn-secondary">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
+                        <button onclick="mostrarFormularioCrear()" class="btn-primary">
+                            <i class="fas fa-plus"></i> Nueva Oferta
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="listaOfertas" class="cards-container">
+                    <!--carga de ofertas-->
+                </div>
+            </div>
+
+            <!--formulario-->
+            <div class="form-container" id="formContainer">
+                <div class="form-header">
+                    <h2 id="formTitle"><i class="fas fa-edit"></i> Nueva Oferta</h2>
+                    <button onclick="ocultarFormulario()" class="btn-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="ofertaForm" class="form">
+                    <input type="hidden" id="nroId" name="nroId">
+                    
+                    <div class="form-group">
+                        <label for="puesto"><i class="fas fa-user-tie"></i> Puesto:*</label>
+                        <input type="text" id="puesto" name="Puesto" required 
+                               placeholder="Ej: Programador Backend, Arquitecto de SW">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="empresa"><i class="fas fa-building"></i> Empresa:*</label>
+                        <input type="text" id="empresa" name="Empresa.RazonSoc" required 
+                               placeholder="Nombre de la empresa">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="direccion"><i class="fas fa-map-marker-alt"></i> Dirección:*</label>
+                            <input type="text" id="direccion" name="Empresa.Direccion" required 
+                                   placeholder="Dirección de la empresa">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="distrito"><i class="fas fa-map-pin"></i> Distrito:*</label>
+                            <input type="text" id="distrito" name="Empresa.Distrito" required 
+                                   placeholder="Distrito de ubicación">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="formacion"><i class="fas fa-graduation-cap"></i> Formación Requerida:*</label>
+                        <input type="text" id="formacion" name="Requisitos.Formacion" required 
+                               placeholder="Ej: Ingeniería Informática, Universitaria">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="conocimientos"><i class="fas fa-code"></i> Conocimientos:* (separados por coma)</label>
+                        <textarea id="conocimientos" name="Requisitos.Conocimientos" rows="3" required 
+                                  placeholder="Ej: JavaScript, Node.js, MongoDB, React, Angular"></textarea>
+                        <small class="form-help">Escribe cada conocimiento separado por coma</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="experiencia"><i class="fas fa-chart-line"></i> Experiencia (años):*</label>
+                            <input type="number" id="experiencia" name="Experiencia" min="0" max="50" required 
+                                   placeholder="Años de experiencia requeridos">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pagoMensual"><i class="fas fa-money-bill-wave"></i> Pago Mensual (USD):*</label>
+                            <input type="number" id="pagoMensual" name="PagoMensual" min="0" step="100" required 
+                                   placeholder="Salario mensual en dólares">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fechaFinal"><i class="fas fa-calendar-alt"></i> Fecha Final:*</label>
+                        <input type="date" id="fechaFinal" name="FechaFinal" required>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Guardar Oferta
+                        </button>
+                        <button type="button" onclick="ocultarFormulario()" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="button" id="btnEliminar" onclick="eliminarOferta()" class="btn-danger" style="display: none;">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                    
+                    <small class="form-note">* Campos obligatorios</small>
+                </form>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-info-circle"></i> Información</h4>
+                    <p>Sistema CRUD Completo de Ofertas de Empleo</p>
+                    <p>Desarrollado con Node.js, Express, MongoDB</p>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-cogs"></i> Funcionalidades</h4>
+                    <p>✓ CRUD Completo ✓ Estadísticas ✓ Búsqueda Avanzada</p>
+                    <p>✓ Promedios ✓ Exportación ✓ Responsive</p>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-wifi"></i> Estado del Sistema</h4>
+                    <p>API: <span id="apiStatusFooter">Verificando...</span></p>
+                    <p>Ofertas: <span id="ofertasCountFooter">0</span> registradas</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Sistema de Ofertas de Empleo - Versión 2.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal" id="knowledgeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-code"></i> Resultados por Conocimiento</h3>
+                <button onclick="cerrarModal()" class="btn-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knowledgeResults">
+                <!--carga de resultados-->
+            </div>
+            <div class="modal-footer">
+                <button onclick="cerrarModal()" class="btn-secondary">Cerrar</button>
+                <button onclick="exportarResultadosBusqueda()" class="btn-primary">
+                    <i class="fas fa-download"></i> Exportar Resultados
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

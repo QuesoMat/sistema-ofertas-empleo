@@ -1,0 +1,273 @@
+[{
+  "_id": {
+    "$oid": "690387ab2cd75f0a7c7163b8"
+  },
+  "NroId": 1,
+  "Empresa": {
+    "RazonSoc": "SODIMAC",
+    "Direccion": "Av. Pan. Norte - 1era PRO",
+    "Distrito": "Independencia"
+  },
+  "Requisitos": {
+    "Formacion": "Universitaria",
+    "Conocimientos": [
+      "Node-js",
+      "PHP",
+      "Python",
+      "Angular",
+      "MongoDB",
+      "MySql",
+      "UML"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 1750,
+  "Puesto": "Programador Backend",
+  "FechaFinal": "01/12/2025"
+},
+{
+  "_id": {
+    "$oid": "69038a2dced10e543a0a703b"
+  },
+  "NroId": 2,
+  "Empresa": {
+    "RazonSoc": "ANTAMINA",
+    "Direccion": "Cajamarca",
+    "Distrito": "Cutervo"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Elctronico",
+    "Conocimientos": [
+      "Redes CISCO",
+      "Kali Linux"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 1750,
+  "Puesto": "Programador Backend",
+  "FechaFinal": "01/12/2025"
+},
+{
+  "_id": {
+    "$oid": "69038b10276812402f2433ab"
+  },
+  "NroId": 3,
+  "Empresa": {
+    "RazonSoc": "ARBORADA",
+    "Direccion": "Ancash",
+    "Distrito": "Cutervo"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Elctronico",
+    "Conocimientos": [
+      "Redes CISCO",
+      "Kali Linux"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 3750,
+  "Puesto": "Arqitecto de SW",
+  "FechaFinal": "01/12/2025"
+},
+{
+  "_id": {
+    "$oid": "69038c545c887e56be8488be"
+  },
+  "NroId": 4,
+  "Empresa": {
+    "RazonSoc": "CERRO VERDE",
+    "Direccion": "Av. peru 6744",
+    "Distrito": "Cutervo"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Elctronico",
+    "Conocimientos": [
+      "Redes CISCO",
+      "Kali Linux"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 1750,
+  "Puesto": "Prog. WEB",
+  "FechaFinal": "01/12/2025"
+},
+{
+  "_id": {
+    "$oid": "690395b47ab92c60e0292c53"
+  },
+  "NroId": 5,
+  "Empresa": {
+    "RazonSoc": "MIN. PASCO",
+    "Direccion": "Av. Lima 4723",
+    "Distrito": "Cerro de Pasco"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Elctronico",
+    "Conocimientos": [
+      "Redes CISCO",
+      "Kali Linux"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 1750,
+  "Puesto": "Prog. de Sistemas",
+  "FechaFinal": "01/12/2025"
+},
+{
+  "_id": {
+    "$oid": "6903a4a765e6a66e22d1d26e"
+  },
+  "NroId": 6,
+  "Empresa": {
+    "RazonSoc": "STA. ROSA",
+    "Direccion": "Av. Pardo 345",
+    "Distrito": "Miraflores"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Elctronico",
+    "Conocimientos": [
+      "Angular",
+      "Node JS",
+      "MySql",
+      "React"
+    ]
+  },
+  "Experiencia": 2,
+  "PagoMensual": 1800,
+  "Puesto": "Programador WEB",
+  "FechaFinal": "01/11/2025"
+},
+{
+  "_id": {
+    "$oid": "692e117003ce1cc246461e93"
+  },
+  "NroId": 8,
+  "Empresa": {
+    "RazonSoc": "INTERBANCK",
+    "Direccion": "Av. Paseo Republica 3445",
+    "Distrito": "San Isadro"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Informatico",
+    "Conocimientos": [
+      "Angular",
+      "Node JS",
+      "MongoDB",
+      "React",
+      "C++",
+      "Java"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 4800,
+  "Puesto": "Progr. de Sustemas",
+  "FechaFinal": "01/11/2025"
+},
+{
+  "_id": {
+    "$oid": "692e15bfda7ebb36db3aa653"
+  },
+  "NroId": 10,
+  "Empresa": {
+    "RazonSoc": "GRUPO ROMERO",
+    "Direccion": "Av. Aramburu 3265",
+    "Distrito": "San Isadro"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Informatico",
+    "Conocimientos": [
+      "Angular",
+      "Node JS",
+      "Sql Server",
+      "MongoDB",
+      "React",
+      "C++",
+      "Java"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 4900,
+  "Puesto": "Progr. de Sustemas",
+  "FechaFinal": "01/02/2026"
+},
+{
+  "_id": {
+    "$oid": "692e2afb2f441d312e565a27"
+  },
+  "NroId": 11,
+  "Empresa": {
+    "RazonSoc": "GRUPO GLORIA",
+    "Direccion": "Av. Aramburu 6565",
+    "Distrito": "San Isadro"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Informatico",
+    "Conocimientos": [
+      "Android",
+      "Angular",
+      "Node JS",
+      "Sql Server",
+      "MongoDB",
+      "React",
+      "C++",
+      "Java"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 4800,
+  "Puesto": "Progr. de Sustemas",
+  "FechaFinal": "01/01/2026"
+},
+{
+  "_id": {
+    "$oid": "692e494a987d259945927f2c"
+  },
+  "NroId": 15,
+  "Empresa": {
+    "RazonSoc": "GRUPO WIENER",
+    "Direccion": "Av. Arequipa 665",
+    "Distrito": "Lima"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Sistemas",
+    "Conocimientos": [
+      "Android",
+      "Angular",
+      "Node JS",
+      "Sql Server",
+      "MongoDB",
+      "React",
+      "C++",
+      "Java"
+    ]
+  },
+  "Experiencia": 4,
+  "PagoMensual": 4800,
+  "Puesto": "Adm. de Sustemas",
+  "FechaFinal": "01/01/2026"
+},
+{
+  "_id": {
+    "$oid": "692e5a30288ef0af0a826038"
+  },
+  "NroId": 7,
+  "Empresa": {
+    "RazonSoc": "MOLITALIA",
+    "Direccion": "Av. Angamos 667",
+    "Distrito": "Surquillo"
+  },
+  "Requisitos": {
+    "Formacion": "Ing. Electronico",
+    "Conocimientos": [
+      "CISCO",
+      "Cableado estructurado",
+      "Comp. en la nube",
+      "C++",
+      "Java"
+    ]
+  },
+  "Experiencia": 3,
+  "PagoMensual": 4600,
+  "Puesto": "Adm. de Redes",
+  "FechaFinal": "01/01/2026"
+}]
