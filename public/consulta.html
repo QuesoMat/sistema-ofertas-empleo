@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Ofertas de Empleo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <style>
+        .consulta-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .consulta-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .consulta-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f8f9fa;
+            margin-top: 8px;
+        }
+        
+        .consulta-input:focus {
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+        
+        .consulta-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .resultados-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .resultados-table th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .resultados-table td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+        
+        .resultados-table tr:hover td {
+            background-color: #f8f9fa;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #7f8c8d;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="consulta-container">
+        <header class="header">
+            <h1><i class="fas fa-search"></i> Consultar Ofertas de Empleo</h1>
+            <p>Sistema de búsqueda avanzada por formación, conocimientos y experiencia</p>
+            <div class="header-info">
+                <a href="/" class="btn-primary" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Volver al CRUD
+                </a>
+            </div>
+        </header>
+
+        <div class="consulta-form">
+            <h2 style="margin-bottom: 25px; color: #2c3e50;">
+                <i class="fas fa-filter"></i> Filtros de Búsqueda
+            </h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="consulta-label">
+                        <i class="fas fa-graduation-cap"></i> Formación:
+                    </label>
+                    <input type="text" id="txtFormacion" class="consulta-input" 
+                           placeholder="Ej: Ingeniería Informática, Universitaria">
+                </div>
+                
+                <div class="form-group">
+                    <label class="consulta-label">
+                        <i class="fas fa-code"></i> Conocimientos (separados por coma):
+                    </label>
+                    <input type="text" id="txtConoce" class="consulta-input" 
+                           placeholder="Ej: Java, Python, MySQL, React">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="consulta-label">
+                        <i class="fas fa-chart-line"></i> Experiencia entre años:
+                    </label>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <div style="flex: 1;">
+                            <input type="number" id="txtA" class="consulta-input" 
+                                   value="0" min="0" placeholder="Años desde">
+                        </div>
+                        <span style="color: #7f8c8d; font-weight: bold;">y</span>
+                        <div style="flex: 1;">
+                            <input type="number" id="txtB" class="consulta-input" 
+                                   value="10" min="0" placeholder="Años hasta">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: flex-end;">
+                    <button onclick="buscarOfertas()" class="btn-primary" style="height: 55px; width: 100%;">
+                        <i class="fas fa-search"></i> Buscar Ofertas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stats-header">
+                <h2><i class="fas fa-list-alt"></i> Resultados de la Búsqueda</h2>
+                <div class="stats-actions">
+                    <button onclick="exportarResultados()" class="btn-secondary" id="btnExportar" disabled>
+                        <i class="fas fa-download"></i> Exportar Resultados
+                    </button>
+                </div>
+            </div>
+            
+            <div id="resultadosContainer">
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <h3>Ingresa los criterios de búsqueda</h3>
+                    <p>Usa los filtros de arriba para buscar ofertas de empleo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script>
+        let resultadosActuales = [];
+        
+        async function buscarOfertas() {
+            const formacion = document.getElementById('txtFormacion').value.trim();
+            const conocimientos = document.getElementById('txtConoce').value.trim();
+            const a = parseInt(document.getElementById('txtA').value) || 0;
+            const b = parseInt(document.getElementById('txtB').value) || 10;
+            
+            if (a > b) {
+                alertify.error('El valor A debe ser menor que B');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/ofertas');
+                if (!response.ok) throw new Error('Error al cargar ofertas');
+                
+                const todasLasOfertas = await response.json();
+                
+                //aplicar filtros
+                let filtradas = todasLasOfertas;
+                
+                if (formacion) {
+                    filtradas = filtradas.filter(oferta => 
+                        oferta.Requisitos?.Formacion?.toLowerCase().includes(formacion.toLowerCase())
+                    );
+                }
+                
+                if (conocimientos) {
+                    const conocimientosArray = conocimientos.split(',').map(c => c.trim().toLowerCase());
+                    filtradas = filtradas.filter(oferta => {
+                        const ofertaConocimientos = Array.isArray(oferta.Requisitos?.Conocimientos)
+                            ? oferta.Requisitos.Conocimientos.map(c => c.toLowerCase())
+                            : [];
+                        
+                        return conocimientosArray.every(conoc => 
+                            ofertaConocimientos.some(oc => oc.includes(conoc))
+                        );
+                    });
+                }
+                
+                filtradas = filtradas.filter(oferta => {
+                    const exp = oferta.Experiencia || 0;
+                    return exp >= a && exp <= b;
+                });
+                
+                resultadosActuales = filtradas;
+                mostrarResultados(filtradas);
+                
+                const btnExportar = document.getElementById('btnExportar');
+                btnExportar.disabled = filtradas.length === 0;
+                
+                alertify.success(`Encontradas ${filtradas.length} ofertas`);
+                
+            } catch (error) {
+                alertify.error('Error en la búsqueda: ' + error.message);
+                mostrarError();
+            }
+        }
+        
+        function mostrarResultados(ofertas) {
+            const container = document.getElementById('resultadosContainer');
+            
+            if (ofertas.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron ofertas</h3>
+                        <p>No hay resultados que coincidan con los criterios de búsqueda</p>
+                        <p>Intenta con otros filtros o valores diferentes</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const html = `
+                <table class="resultados-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Razón Social</th>
+                            <th>Dirección</th>
+                            <th>Puesto</th>
+                            <th>Formación</th>
+                            <th>Experiencia</th>
+                            <th>Conocimientos</th>
+                            <th>Pago Mensual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${ofertas.map(oferta => `
+                            <tr>
+                                <td><strong>${oferta.NroId}</strong></td>
+                                <td>${oferta.Empresa?.RazonSoc || 'N/A'}</td>
+                                <td>${oferta.Empresa?.Direccion || 'N/A'}</td>
+                                <td><strong>${oferta.Puesto}</strong></td>
+                                <td>${oferta.Requisitos?.Formacion || 'N/A'}</td>
+                                <td>${oferta.Experiencia || 0} años</td>
+                                <td>
+                                    ${Array.isArray(oferta.Requisitos?.Conocimientos) 
+                                        ? oferta.Requisitos.Conocimientos.map(c => 
+                                            `<span style="background: #e8f4fc; color: #3498db; padding: 3px 8px; border-radius: 10px; font-size: 0.85rem; margin: 2px; display: inline-block;">
+                                                ${c}
+                                            </span>`
+                                          ).join('')
+                                        : 'N/A'}
+                                </td>
+                                <td><strong>$${(oferta.PagoMensual || 0).toLocaleString()}</strong></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <p style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-info-circle" style="color: #3498db;"></i>
+                        <strong>Total:</strong> ${ofertas.length} ofertas encontradas
+                    </p>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function mostrarError() {
+            const container = document.getElementById('resultadosContainer');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i>
+                    <h3 style="color: #e74c3c;">Error en la búsqueda</h3>
+                    <p>No se pudieron cargar los resultados. Intenta de nuevo.</p>
+                    <button onclick="buscarOfertas()" class="btn-primary" style="margin-top: 15px;">
+                        <i class="fas fa-sync-alt"></i> Reintentar
+                    </button>
+                </div>
+            `;
+        }
+        
+        function exportarResultados() {
+            if (resultadosActuales.length === 0) return;
+            
+            let csv = 'ID,Razon Social,Direccion,Puesto,Formacion,Experiencia,Conocimientos,Pago Mensual\n';
+            
+            resultadosActuales.forEach(oferta => {
+                const conocimientos = Array.isArray(oferta.Requisitos?.Conocimientos)
+                    ? oferta.Requisitos.Conocimientos.join('; ')
+                    : '';
+                
+                csv += `"${oferta.NroId}","${oferta.Empresa?.RazonSoc || ''}","${oferta.Empresa?.Direccion || ''}","${oferta.Puesto}","${oferta.Requisitos?.Formacion || ''}","${oferta.Experiencia || 0}","${conocimientos}","${oferta.PagoMensual || 0}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `consulta-ofertas-${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            alertify.success('Resultados exportados');
+        }
+        
+        //buscar con botón Enter
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('#txtFormacion, #txtConoce, #txtA, #txtB');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') buscarOfertas();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
